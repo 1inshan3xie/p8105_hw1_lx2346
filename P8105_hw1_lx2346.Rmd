@@ -28,6 +28,7 @@ The key varibles and their values in the dataset include:\
 \
 **The mean of the flipper length is `r mean(penguins$flipper_length_mm, na.rm = TRUE)`.**\
 \
+
 ## Scatterplot of flipper_length_mm vs bill_length_mm
 ```{r}
 library(ggplot2)
