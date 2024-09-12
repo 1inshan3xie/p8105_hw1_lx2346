@@ -1,0 +1,80 @@
+---
+title: "P805_hw1_lx2346"
+author: "linshan"
+date: "2024-09-12"
+output: html_document
+---
+
+# Problem 1
+## short description of the penguins dataset 
+Load the penguins dataset 
+```{r}
+data("penguins", package = "palmerpenguins")
+```
+
+**The penguins data set has `r nrow(penguins)` rows and `r ncol(penguins)` columns.**\
+\
+**The variables in the dataset are `r names(penguins)`.**\
+\
+The key varibles and their values in the dataset include:\
+* sex\
+* year\
+* species : `r unique(penguins$species)`\
+* island : `r unique(penguins$island)`\
+* bill_length_mm : length of penguins' bill, ranging from `r min(penguins$bill_length_mm,na.rm = TRUE)` to `r max(penguins$bill_length_mm, na.rm = TRUE)` mm.\
+* bill_depth_mm : length of penguins' bill, ranging from `r min(penguins$bill_depth_mm,na.rm = TRUE)` to `r max(penguins$bill_depth_mm, na.rm = TRUE)` mm.\
+* flipper_length_mm : length of penguins' flipper, ranging from `r min(penguins$flipper_length_mm,na.rm = TRUE)` to `r max(penguins$flipper_length_mm, na.rm = TRUE)` mm.\
+* body_mass_g : ranging from `r min(penguins$body_mass_g,na.rm = TRUE)` to `r max(penguins$body_mass_g, na.rm = TRUE)` g.\
+\
+**The mean of the flipper length is `r mean(penguins$flipper_length_mm, na.rm = TRUE)`.**\
+\
+## Scatterplot of flipper_length_mm vs bill_length_mm
+```{r}
+library(ggplot2)
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm))+
+  geom_point(aes(color = species))
+ggsave("scatter_fli_vs_bill.png")
+```
+
+# Problem 2
+## create a data frame
+```{r}
+library(tidyverse)
+char_ori <- c("a","b","c")
+fac_ori <- factor(c("low","medium","high"))
+data_framee <- tibble(
+  random_var = rnorm(10),
+  logi_vec = random_var > 0,
+  char_vec = sample(char_ori,size = 10,replace = TRUE),
+  fac_vec = sample(fac_ori, size = 10, replace = TRUE))
+```
+From above, a data frame with 4 columns are constructed.
+
+## calculate the mean of each varibale
+mean of the random sample: `r mean(pull(data_framee,random_var))`.\
+mean of the logical vector: `r mean(pull(data_framee,logi_vec))`.\
+mean of the character vector: `r mean(pull(data_framee,char_vec))`.\
+mean of the factor vector:  `r mean(pull(data_framee,fac_vec))`.\
+
+It seems that only the random varible and the logical vector have the means. The rest of the two vectors' mean function doesn't work.
+
+### If I use as.numeric function, what will happen next?
+```{r results='hide'}
+logi_asnum <- as.numeric(pull(data_framee,logi_vec))
+char_asnum <- as.numeric(pull(data_framee,char_vec))
+fac_asnum <- as.numeric(pull(data_framee,fac_vec))
+```
+## Calculate the means again.
+mean of the logical vector: `r mean(logi_asnum)`.\
+mean of the character vector: `r mean(char_asnum)`.\
+mean of the factor vector: `r mean(fac_asnum)`.\
+**As it is shown in the result, when converted to numeric data type, the mean of the logical vector and factor vector can be calculated.**\
+* When converting factors to numeric, as.numeric() first converts the factor levels to integers, such as 1,2 and 3 in my example.\
+* When converting logical variables, TRUE will be converted to 1 and FULSE will be converted to 0.\
+* However, when the object need to be converted is character, things may get a little complicated.\
+- If the character vector represents numbers (eg."1","3"), as.numberic() will convert these characters into numeric values.\
+- However, if the character vector does not represent numbers, the function will return NA, then the mean cannot be calculated.
+
+
+
+
