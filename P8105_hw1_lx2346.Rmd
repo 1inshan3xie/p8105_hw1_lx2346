@@ -2,7 +2,7 @@
 title: "P805_hw1_lx2346"
 author: "linshan"
 date: "2024-09-12"
-output: html_document
+output: github_document
 ---
 
 # Problem 1
